@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "108148454657",
+    "project_id": "fir-sample-59815",
+    "storage_bucket": "fir-sample-59815.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:108148454657:android:812af1a082bba0f4615700",
+        "android_client_info": {
+          "package_name": "com.radroid.firebase_sample"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAcXxfm-OENcT2HGNiNJv79phTxCT27Xhk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
