@@ -79,7 +79,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   ],
                 )),
             RoundButton(
-              isloading: loading,
+              loading: loading,
               title: 'Sign up',
               onTap: () {
                 if (_formKey.currentState!.validate()) {
@@ -118,8 +118,8 @@ class _SignupScreenState extends State<SignupScreen> {
     // Form is valid, perform login or other actions
     _auth
         .createUserWithEmailAndPassword(
-        email: emailController.text.toString(),
-        password: passwordController.text.toString())
+            email: emailController.text.toString(),
+            password: passwordController.text.toString())
         .then((value) {
       setState(() {
         loading = false;

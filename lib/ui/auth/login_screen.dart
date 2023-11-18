@@ -1,4 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_sample/posts/post_screen.dart';
 import 'package:firebase_sample/ui/auth/signup_screen.dart';
+import 'package:firebase_sample/utils/utils.dart';
 import 'package:firebase_sample/widgets/round_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -14,6 +17,8 @@ class _LoginScreenState extends State<LoginScreen> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  final _auth = FirebaseAuth.instance;
+  bool loading = false;
 
   @override
   void dispose() {
@@ -21,6 +26,32 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
     emailController.dispose();
     passwordController.dispose();
+  }
+
+  void login() {
+    setState(() {
+      loading = true;
+    });
+    _auth
+        .signInWithEmailAndPassword(
+            email: emailController.text.toString(),
+            password: passwordController.text.toString())
+        .then((value) {
+      Utils().toastMessage(value.user!.email.toString());
+      setState(() {
+        loading = false;
+      });
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const PostScreen(),
+          ));
+    }).onError((error, stackTrace) {
+      Utils().toastMessage(error.toString());
+      setState(() {
+        loading = false;
+      });
+    });
   }
 
   @override
@@ -43,6 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Column(
                     children: [
                       TextFormField(
+                        controller: emailController,
                         keyboardType: TextInputType.emailAddress,
                         decoration: const InputDecoration(
                             labelText: 'Email',
@@ -59,6 +91,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         height: 20,
                       ),
                       TextFormField(
+                        controller: passwordController,
                         obscureText: true,
                         // Hides the entered text for password fields
                         decoration: const InputDecoration(
@@ -80,10 +113,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     ],
                   )),
               RoundButton(
+                loading: loading,
                 title: 'Login',
                 onTap: () {
                   if (_formKey.currentState!.validate()) {
                     // Form is valid, perform login or other actions
+                    login();
                   }
                 },
               ),
