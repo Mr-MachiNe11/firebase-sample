@@ -45,6 +45,33 @@ class _PostScreenState extends State<PostScreen> {
       ),
       body: Column(
         children: [
+
+          //fetch data using StreamBuilder
+          Expanded(
+              child: StreamBuilder(
+                  stream: databaseRef.onValue,
+                  builder: (context, AsyncSnapshot<DatabaseEvent> snapshot) {
+                    if (!snapshot.hasData) {
+                      return const CircularProgressIndicator();
+                    } else {
+                      Map<dynamic, dynamic> map =
+                          snapshot.data!.snapshot.value as dynamic;
+                      List<dynamic> list = [];
+                      list.clear();
+                      list = map.values.toList();
+                      return ListView.builder(
+                        itemCount: snapshot.data!.snapshot.children.length,
+                        itemBuilder: (context, index) {
+                          return ListTile(
+                            title: Text(list[index]['title'].toString()),
+                            subtitle: Text(list[index]['id'].toString()),
+                          );
+                        },
+                      );
+                    }
+                  })),
+
+          //fetch data another way
           Expanded(
             child: FirebaseAnimatedList(
               query: databaseRef,
